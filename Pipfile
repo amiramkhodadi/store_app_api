@@ -10,6 +10,8 @@ mysqlclient = "*"
 factory-boy = "*"
 faker = "*"
 drf-nested-routers = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

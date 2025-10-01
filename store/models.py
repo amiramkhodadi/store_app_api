@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -41,14 +42,39 @@ class Product(models.Model):
 
 
 class Customer(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField()
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="customer"
+    )
+    # mitonim  b  do  ravesh  bala  v  apiin  braye ezafe  krdn  user  asli site  b  karbaran  estefade  konim
+    # haji hoseini gofte  k  ravesh  bala ii bhine tare chon yek  string  brmigrade
+    # vli   dar  paiini  zamani k  ma  b  khoroji ham niazi  ndashte  bashim
+    # bazm miad  table  user ro  bramon ama de  mikone  v in  dar  pas  zamine  etefaq  khobi  nis
+    # *****
+    # user = models.OneToOneField(
+    #     get_user_model, on_delete=models.CASCADE, related_name="customer"
+    # )
+    # *****
     phone_number = models.CharField(max_length=255)
     birth_date = models.DateField(null=True, blank=True)
 
+    @property
+    def full_name(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+    @property
+    def first_name(self):
+        return self.user.first_name
+
+    @property
+    def last_name(self):
+        return self.user.last_name
+
+    @property
+    def email(self):
+        return self.user.email
+
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Address(models.Model):
